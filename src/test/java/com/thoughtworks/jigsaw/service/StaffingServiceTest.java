@@ -64,6 +64,12 @@ public class StaffingServiceTest {
 
         employees.add(huan);
 
+        Employee xiaochong = new Employee("Xiaochong Zhang");
+        List<Skill> xiaochongSkills = Collections.singletonList(new Skill(new Technical("Rails", "framework"), 5));
+        xiaochong.setSkills(xiaochongSkills);
+
+        employees.add(xiaochong);
+
         return employees;
     }
 
@@ -71,7 +77,7 @@ public class StaffingServiceTest {
     public void should_get_assignable_employees_when_they_are_not_on_any_projects() {
         Iterable<Employee> iterable = staffingService.getAssignableEmployees();
         List<Employee> assignableEmployees = Lists.newArrayList(iterable);
-        assertThat(assignableEmployees.size(), is(3));
+        assertThat(assignableEmployees.size(), is(4));
 
         Employee employee = assignableEmployees.get(0);
         assertThat(employee.getName(), is("Juntao Qiu"));
@@ -89,7 +95,7 @@ public class StaffingServiceTest {
         Iterable<Employee> iterable = staffingService.suitableEmployeesForProject(project);
         List<Employee> assignableEmployees = Lists.newArrayList(iterable);
 
-        assertThat(assignableEmployees.size(), is(1));
+        assertThat(assignableEmployees.size(), is(2));
 
         Employee rubist = assignableEmployees.get(0);
         assertThat(rubist.getName(), is("Xiaofeng Wang"));
