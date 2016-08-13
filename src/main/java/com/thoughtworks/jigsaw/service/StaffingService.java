@@ -2,8 +2,6 @@ package com.thoughtworks.jigsaw.service;
 
 import com.thoughtworks.jigsaw.domain.Employee;
 import com.thoughtworks.jigsaw.domain.Project;
-import com.thoughtworks.jigsaw.domain.Skill;
-import com.thoughtworks.jigsaw.domain.Technical;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
 
 import java.util.stream.Collectors;
@@ -32,13 +30,7 @@ public class StaffingService {
         Iterable<Employee> all = employeeRepository.findAll();
         return streamify(all)
                 .filter(employee -> employee.getCurrentProject() == null)
-                .filter(employee -> {
-                    Stream<Technical> employeeTechnical =
-                            employee.getSkills().stream().map(Skill::getTechnical);
-                    return employeeTechnical.anyMatch(
-                            technical -> project.getTechStack().stream().anyMatch(
-                                    t -> t.equals(technical)));
-                })
+                .filter(employee -> employee.isSuitableFor(project))
                 .collect(Collectors.toList());
     }
 

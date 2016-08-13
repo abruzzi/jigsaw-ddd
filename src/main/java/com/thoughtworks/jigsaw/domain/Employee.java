@@ -14,4 +14,10 @@ public class Employee {
     public Employee(String name) {
         this.name = name;
     }
+
+    public boolean isSuitableFor(Project project) {
+        return skills.stream().map(Skill::getTechnical).anyMatch(
+                technical -> project.getTechStack().stream().anyMatch(t -> t.equals(technical))
+        );
+    }
 }

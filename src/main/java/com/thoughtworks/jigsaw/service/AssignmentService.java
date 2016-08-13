@@ -7,8 +7,4 @@ public class AssignmentService {
     public boolean isEmployeeSuitableForProject(Employee employee, Project project) {
         return false;
     }
-
-    public void assignEmployeeToProject(Employee employee, Project project) {
-
-    }
 }
