@@ -3,6 +3,7 @@ package com.thoughtworks.jigsaw.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,12 @@ public class Project {
     @Getter
     @Setter
     private List<Assignment> assignments;
+
+    public boolean assign(Assignment assignment) {
+        if(this.assignments == null) {
+            assignments = new ArrayList<>();
+        }
+
+        return assignments.add(assignment);
+    }
 }
