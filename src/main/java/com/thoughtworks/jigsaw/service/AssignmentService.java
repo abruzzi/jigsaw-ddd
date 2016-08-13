@@ -9,6 +9,6 @@ public class AssignmentService {
         Project project = assignment.getProject();
         boolean suitable = assignment.getEmployee().isSuitableFor(project);
 
-        return suitable && project.assign(assignment);
+        return suitable && project.addAssignment(assignment);
     }
 }

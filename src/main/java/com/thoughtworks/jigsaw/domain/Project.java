@@ -20,10 +20,9 @@ public class Project {
     private Map<Role, Integer> staffingModel;
 
     @Getter
-    @Setter
     private List<Assignment> assignments;
 
-    public boolean assign(Assignment assignment) {
+    public boolean addAssignment(Assignment assignment) {
         if(this.assignments == null) {
             assignments = new ArrayList<>();
         }
