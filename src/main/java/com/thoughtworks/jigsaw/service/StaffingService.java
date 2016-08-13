@@ -17,7 +17,7 @@ public class StaffingService {
         Iterable<Employee> all = employeeRepository.findAll();
         return StreamSupport
                 .stream(all.spliterator(), false)
-                .filter((employee -> employee.getCurrentProject() != null))
+                .filter((employee -> employee.getCurrentProject() == null))
                 .collect(Collectors.toList());
     }
 }

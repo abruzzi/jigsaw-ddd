@@ -48,5 +48,7 @@ public class StaffingServiceTest {
         Iterable<Employee> iterable = staffingService.getAssignableEmployees();
         List<Employee> assignableEmployees = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
         assertEquals(assignableEmployees.size(), 1);
+        Employee employee = assignableEmployees.get(0);
+        assertEquals(employee.getName(), "Juntao Qiu");
     }
 }
