@@ -1,9 +1,13 @@
 package com.thoughtworks.jigsaw.service;
 
 import com.thoughtworks.jigsaw.domain.Employee;
+import com.thoughtworks.jigsaw.domain.Project;
+import com.thoughtworks.jigsaw.domain.Skill;
+import com.thoughtworks.jigsaw.domain.Technical;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
 
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class StaffingService {
@@ -13,11 +17,29 @@ public class StaffingService {
         this.employeeRepository = employeeRepository;
     }
 
+    private Stream<Employee> streamify(Iterable<Employee> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
     public Iterable<Employee> getAssignableEmployees() {
         Iterable<Employee> all = employeeRepository.findAll();
-        return StreamSupport
-                .stream(all.spliterator(), false)
+        return streamify(all)
                 .filter((employee -> employee.getCurrentProject() == null))
                 .collect(Collectors.toList());
     }
+
+    public Iterable<Employee> suitableEmployeesForProject(Project project) {
+        Iterable<Employee> all = employeeRepository.findAll();
+        return streamify(all)
+                .filter(employee -> employee.getCurrentProject() == null)
+                .filter(employee -> {
+                    Stream<Technical> employeeTechnical =
+                            employee.getSkills().stream().map(Skill::getTechnical);
+                    return employeeTechnical.anyMatch(
+                            technical -> project.getTechStack().stream().anyMatch(
+                                    t -> t.equals(technical)));
+                })
+                .collect(Collectors.toList());
+    }
+
 }

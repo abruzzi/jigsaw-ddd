@@ -2,7 +2,10 @@ package com.thoughtworks.jigsaw.service;
 
 import com.thoughtworks.jigsaw.domain.Employee;
 import com.thoughtworks.jigsaw.domain.Project;
+import com.thoughtworks.jigsaw.domain.Skill;
+import com.thoughtworks.jigsaw.domain.Technical;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,11 +14,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
-import static java.util.stream.Collectors.toList;
-import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,21 +38,55 @@ public class StaffingServiceTest {
         ArrayList<Employee> employees = new ArrayList<>();
 
         Employee juntao = new Employee("Juntao Qiu");
+        List<Skill> juntaoSkills = Collections.singletonList(new Skill(new Technical("JavaScript", "language"), 5));
+        juntao.setSkills(juntaoSkills);
         employees.add(juntao);
 
         Employee dong = new Employee("Dong Yang");
+        List<Skill> dongSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
+        juntao.setSkills(dongSkills);
         dong.setCurrentProject(new Project());
 
         employees.add(dong);
+
+        Employee xiaofeng = new Employee("Xiaofeng Wang");
+        List<Skill> xiaofengSkills = Collections.singletonList(new Skill(new Technical("Ruby", "language"), 5));
+        xiaofeng.setSkills(xiaofengSkills);
+        employees.add(xiaofeng);
+
+        Employee huan = new Employee("Huan Wang");
+        List<Skill> huanSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
+        huan.setSkills(huanSkills);
+        employees.add(huan);
+
         return employees;
     }
 
     @Test
-    public void should_known_assignable_employees() {
+    public void should_get_assignable_employees_when_they_are_not_on_any_projects() {
         Iterable<Employee> iterable = staffingService.getAssignableEmployees();
-        List<Employee> assignableEmployees = StreamSupport.stream(iterable.spliterator(), false).collect(toList());
-        assertEquals(assignableEmployees.size(), 1);
+        List<Employee> assignableEmployees = Lists.newArrayList(iterable);
+        assertThat(assignableEmployees.size(), is(3));
+
         Employee employee = assignableEmployees.get(0);
-        assertEquals(employee.getName(), "Juntao Qiu");
+        assertThat(employee.getName(), is("Juntao Qiu"));
+    }
+
+    @Test
+    public void should_return_rubist_for_project_rubymine() {
+        List<Technical> techStack = Arrays.asList(
+                new Technical("Ruby", "language"),
+                new Technical("Rails", "framework"));
+
+        Project project = new Project();
+        project.setTechStack(techStack);
+
+        Iterable<Employee> iterable = staffingService.suitableEmployeesForProject(project);
+        List<Employee> assignableEmployees = Lists.newArrayList(iterable);
+
+        assertThat(assignableEmployees.size(), is(1));
+
+        Employee rubist = assignableEmployees.get(0);
+        assertThat(rubist.getName(), is("Xiaofeng Wang"));
     }
 }
