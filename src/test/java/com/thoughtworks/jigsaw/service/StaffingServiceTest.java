@@ -38,13 +38,16 @@ public class StaffingServiceTest {
         ArrayList<Employee> employees = new ArrayList<>();
 
         Employee juntao = new Employee("Juntao Qiu");
-        List<Skill> juntaoSkills = Collections.singletonList(new Skill(new Technical("JavaScript", "language"), 5));
+        List<Skill> juntaoSkills = Collections.singletonList(
+                new Skill(new Technical("JavaScript", "language"), 5)
+        );
         juntao.setSkills(juntaoSkills);
+
         employees.add(juntao);
 
         Employee dong = new Employee("Dong Yang");
         List<Skill> dongSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
-        juntao.setSkills(dongSkills);
+        dong.setSkills(dongSkills);
         dong.setCurrentProject(new Project());
 
         employees.add(dong);
@@ -52,11 +55,13 @@ public class StaffingServiceTest {
         Employee xiaofeng = new Employee("Xiaofeng Wang");
         List<Skill> xiaofengSkills = Collections.singletonList(new Skill(new Technical("Ruby", "language"), 5));
         xiaofeng.setSkills(xiaofengSkills);
+
         employees.add(xiaofeng);
 
         Employee huan = new Employee("Huan Wang");
         List<Skill> huanSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
         huan.setSkills(huanSkills);
+
         employees.add(huan);
 
         return employees;
