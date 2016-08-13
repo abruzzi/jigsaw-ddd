@@ -6,8 +6,6 @@ import java.util.Map;
 
 public class Project {
     private List<Technical> techStack;
-    private List<Assignment> assignments;
-
     private String client;
     private String location;
     private int manMonth;
