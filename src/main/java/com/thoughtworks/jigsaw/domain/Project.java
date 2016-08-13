@@ -17,4 +17,8 @@ public class Project {
     private String description;
 
     private Map<Role, Integer> staffingModel;
+
+    @Getter
+    @Setter
+    private List<Assignment> assignments;
 }
