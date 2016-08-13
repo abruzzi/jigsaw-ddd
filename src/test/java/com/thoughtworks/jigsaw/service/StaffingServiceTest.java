@@ -37,40 +37,30 @@ public class StaffingServiceTest {
     private List<Employee> prepareEmployees() throws ParseException {
         ArrayList<Employee> employees = new ArrayList<>();
 
-        Employee juntao = new Employee("Juntao Qiu");
-        List<Skill> juntaoSkills = Collections.singletonList(
-                new Skill(new Technical("JavaScript", "language"), 5)
-        );
-        juntao.setSkills(juntaoSkills);
-
+        Employee juntao = prepareEmployee("Juntao Qiu", "JavaScript", "language");
         employees.add(juntao);
 
-        Employee dong = new Employee("Dong Yang");
-        List<Skill> dongSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
-        dong.setSkills(dongSkills);
+        Employee dong = prepareEmployee("Dong Yang", "Java", "language");
         dong.setCurrentProject(new Project());
-
         employees.add(dong);
 
-        Employee xiaofeng = new Employee("Xiaofeng Wang");
-        List<Skill> xiaofengSkills = Collections.singletonList(new Skill(new Technical("Ruby", "language"), 5));
-        xiaofeng.setSkills(xiaofengSkills);
-
+        Employee xiaofeng = prepareEmployee("Xiaofeng Wang", "Ruby", "language");
         employees.add(xiaofeng);
 
-        Employee huan = new Employee("Huan Wang");
-        List<Skill> huanSkills = Collections.singletonList(new Skill(new Technical("Java", "language"), 5));
-        huan.setSkills(huanSkills);
-
+        Employee huan = prepareEmployee("Huan Wang", "Java", "language");
         employees.add(huan);
 
-        Employee xiaochong = new Employee("Xiaochong Zhang");
-        List<Skill> xiaochongSkills = Collections.singletonList(new Skill(new Technical("Rails", "framework"), 5));
-        xiaochong.setSkills(xiaochongSkills);
-
+        Employee xiaochong = prepareEmployee("Xiaochong Zhang", "Rails", "framework");
         employees.add(xiaochong);
 
         return employees;
+    }
+
+    private Employee prepareEmployee(String name, String technology, String category) {
+        Employee employee = new Employee(name);
+        List<Skill> skills = Collections.singletonList(new Skill(new Technical(technology, category), 5));
+        employee.setSkills(skills);
+        return employee;
     }
 
     @Test
