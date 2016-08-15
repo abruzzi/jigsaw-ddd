@@ -3,7 +3,7 @@ spring:
     url: jdbc:mysql://localhost:3306/jigsaw
     driver-class-title: com.mysql.jdbc.Driver
     username: root
-    password: password
+    password:
 
 server:
   port: 9999
@@ -17,4 +17,4 @@ spring:
     url: jdbc:mysql://localhost:3306/jigsaw_test
     driver-class-title: com.mysql.jdbc.Driver
     username: root
-    password: password
+    password:

@@ -36,6 +36,6 @@ public class Project {
     }
 
     public boolean withTechnical(Technical technical) {
-        return false;
+        return techStack.stream().anyMatch(t -> t.equals(technical));
     }
 }
