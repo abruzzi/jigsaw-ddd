@@ -11,6 +11,7 @@ import java.util.Map;
 public class Project {
     @Getter @Setter
     private List<Technical> techStack;
+    private String name;
     private String client;
     private String location;
     private int manMonth;
@@ -18,6 +19,10 @@ public class Project {
     private String description;
 
     private Map<Role, Integer> staffingModel;
+
+    public Project(String name) {
+        this.name = name;
+    }
 
     @Getter
     private List<Assignment> assignments;
@@ -28,5 +33,9 @@ public class Project {
         }
 
         return assignments.add(assignment);
+    }
+
+    public boolean withTechnical(Technical technical) {
+        return false;
     }
 }

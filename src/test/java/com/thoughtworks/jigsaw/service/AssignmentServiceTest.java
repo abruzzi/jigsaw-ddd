@@ -33,7 +33,7 @@ public class AssignmentServiceTest {
                 new Technical("Ruby", "language"),
                 new Technical("Rails", "framework"));
 
-        Project project = new Project();
+        Project project = new Project("Fake Project");
         project.setTechStack(techStack);
 
         return project;

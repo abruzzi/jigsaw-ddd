@@ -41,7 +41,7 @@ public class StaffingServiceTest {
         employees.add(juntao);
 
         Employee dong = prepareEmployee("Dong Yang", "Java", "language");
-        dong.setCurrentProject(new Project());
+        dong.setCurrentProject(new Project("HomeFlight of India"));
         employees.add(dong);
 
         Employee xiaofeng = prepareEmployee("Xiaofeng Wang", "Ruby", "language");
@@ -79,7 +79,7 @@ public class StaffingServiceTest {
                 new Technical("Ruby", "language"),
                 new Technical("Rails", "framework"));
 
-        Project project = new Project();
+        Project project = new Project("Fake Project");
         project.setTechStack(techStack);
 
         Iterable<Employee> iterable = staffingService.suitableEmployeesForProject(project);
