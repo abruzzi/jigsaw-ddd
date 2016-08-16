@@ -17,4 +17,9 @@ public class Assignment {
         this.employee = employee;
         this.duration = duration;
     }
+
+    public void updateRelations() {
+        employee.setCurrentAssignment(this);
+        project.addAssignment(this);
+    }
 }

@@ -1,9 +1,7 @@
 package com.thoughtworks.jigsaw.service;
 
-import com.thoughtworks.jigsaw.domain.Employee;
-import com.thoughtworks.jigsaw.domain.Project;
-import com.thoughtworks.jigsaw.domain.Skill;
-import com.thoughtworks.jigsaw.domain.Technical;
+import com.thoughtworks.jigsaw.domain.*;
+import com.thoughtworks.jigsaw.repository.AssignmentRepository;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -13,13 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +28,21 @@ public class StaffingServiceTest {
     public void setUp() throws ParseException {
         EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         when(employeeRepository.findAll()).thenReturn(prepareEmployees());
-        staffingService = new StaffingService(employeeRepository);
+
+        AssignmentRepository assignmentRepository = mock(AssignmentRepository.class);
+        when(assignmentRepository.findByEmployeeAndEndDateBefore(any(Employee.class), any(Date.class))).thenReturn(prepareAssignments());
+        when(assignmentRepository.findByProject(any(Project.class))).thenReturn(Collections.singletonList(prepareAssignmentFor("ThoughtWorks Core")));
+
+        staffingService = new StaffingService(employeeRepository, assignmentRepository);
+    }
+
+    private Assignment prepareAssignmentFor(String projectName) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return new Assignment(new Project(projectName), new Employee("Someone"), new Duration(simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08"));
+    }
+
+    private Iterable<Assignment> prepareAssignments() throws ParseException {
+        return Collections.singletonList(prepareAssignmentFor(null));
     }
 
     private List<Employee> prepareEmployees() throws ParseException {
@@ -41,7 +52,7 @@ public class StaffingServiceTest {
         employees.add(juntao);
 
         Employee dong = prepareEmployee("Dong Yang", "Java", "language");
-        dong.setCurrentProject(new Project("HomeFlight of India"));
+        dong.setCurrentAssignment(prepareAssignmentFor("HomeFlight of India"));
         employees.add(dong);
 
         Employee xiaofeng = prepareEmployee("Xiaofeng Wang", "Ruby", "language");
@@ -54,13 +65,6 @@ public class StaffingServiceTest {
         employees.add(xiaochong);
 
         return employees;
-    }
-
-    private Employee prepareEmployee(String name, String technology, String category) {
-        Employee employee = new Employee(name);
-        List<Skill> skills = Collections.singletonList(new Skill(new Technical(technology, category), 5));
-        employee.setSkills(skills);
-        return employee;
     }
 
     @Test
@@ -89,5 +93,39 @@ public class StaffingServiceTest {
 
         Employee rubist = assignableEmployees.get(0);
         assertThat(rubist.getName(), is("Xiaofeng Wang"));
+    }
+
+    @Test
+    public void should_assign_right_people_on_project() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Project project = prepareProject();
+        Assignment assignment = new Assignment(
+                project,
+                prepareEmployee("Juntao Qiu", "Ruby", "language"),
+                new Duration(simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08")));
+
+        staffingService.assign(assignment);
+        List<Assignment> assignments = project.getAssignments();
+
+        assertThat(assignments.size(), is(1));
+        assertThat(assignments.get(0).getEmployee().getName(), is("Juntao Qiu"));
+    }
+
+    private Employee prepareEmployee(String name, String technology, String category) {
+        Employee employee = new Employee(name);
+        List<Skill> skills = Collections.singletonList(new Skill(new Technical(technology, category), 5));
+        employee.setSkills(skills);
+        return employee;
+    }
+
+    private Project prepareProject() {
+        List<Technical> techStack = Arrays.asList(
+                new Technical("Ruby", "language"),
+                new Technical("Rails", "framework"));
+
+        Project project = new Project("Fake Project");
+        project.setTechStack(techStack);
+
+        return project;
     }
 }
