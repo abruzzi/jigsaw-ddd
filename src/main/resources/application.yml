@@ -3,10 +3,15 @@ spring:
     url: jdbc:mysql://localhost:3306/jigsaw
     driver-class-title: com.mysql.jdbc.Driver
     username: root
-    password:
+    password: password
 
 server:
   port: 9999
+
+spring.jpa.generate-ddl: true
+spring.jpa.hibernate.ddl-auto: create-drop
+
+spring.jpa.show-sql: true
 
 ---
 
@@ -17,4 +22,4 @@ spring:
     url: jdbc:mysql://localhost:3306/jigsaw_test
     driver-class-title: com.mysql.jdbc.Driver
     username: root
-    password:
+    password: password

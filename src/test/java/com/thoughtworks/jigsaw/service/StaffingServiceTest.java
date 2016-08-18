@@ -30,7 +30,7 @@ public class StaffingServiceTest {
         when(employeeRepository.findAll()).thenReturn(prepareEmployees());
 
         AssignmentRepository assignmentRepository = mock(AssignmentRepository.class);
-        when(assignmentRepository.findByEmployeeAndEndDateBefore(any(Employee.class), any(Date.class))).thenReturn(prepareAssignments());
+        when(assignmentRepository.findByEmployeeAndEndAtBefore(any(Employee.class), any(Date.class))).thenReturn(prepareAssignments());
         when(assignmentRepository.findByProject(any(Project.class))).thenReturn(Collections.singletonList(prepareAssignmentFor("ThoughtWorks Core")));
 
         staffingService = new StaffingService(employeeRepository, assignmentRepository);
@@ -38,7 +38,8 @@ public class StaffingServiceTest {
 
     private Assignment prepareAssignmentFor(String projectName) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        return new Assignment(new Project(projectName), new Employee("Someone"), new Duration(simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08"));
+        return new Assignment(new Project(projectName), new Employee("Someone"),
+                simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08"));
     }
 
     private Iterable<Assignment> prepareAssignments() throws ParseException {
@@ -102,7 +103,7 @@ public class StaffingServiceTest {
         Assignment assignment = new Assignment(
                 project,
                 prepareEmployee("Juntao Qiu", "Ruby", "language"),
-                new Duration(simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08")));
+                simpleDateFormat.parse("2016-08-08"), simpleDateFormat.parse("2016-09-08"));
 
         staffingService.assign(assignment);
         List<Assignment> assignments = project.getAssignments();
@@ -113,7 +114,7 @@ public class StaffingServiceTest {
 
     private Employee prepareEmployee(String name, String technology, String category) {
         Employee employee = new Employee(name);
-        List<Skill> skills = Collections.singletonList(new Skill(new Technical(technology, category), 5));
+        List<Skill> skills = Collections.singletonList(new Skill(technology, category, 5));
         employee.setSkills(skills);
         return employee;
     }

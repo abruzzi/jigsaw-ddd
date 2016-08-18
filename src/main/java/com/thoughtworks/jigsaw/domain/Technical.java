@@ -1,16 +1,30 @@
 package com.thoughtworks.jigsaw.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+
+@Data
+@Entity
+@Table(name = "technicals")
+@NoArgsConstructor
 public class Technical {
-    @Getter @Setter private String name;
-    @Getter @Setter private String category;
+    @Id
+    @GeneratedValue
+    @Column(name = "id", unique = true, nullable = false)
+    private long id;
+
+    private String name;
+    private String category;
 
     public Technical(String name, String category) {
         this.name = name;
         this.category = category;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Project project;
 
     @Override
     public boolean equals(Object o) {

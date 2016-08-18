@@ -1,9 +1,7 @@
 package com.thoughtworks.jigsaw.repository;
 
 import com.thoughtworks.jigsaw.domain.Project;
-import com.thoughtworks.jigsaw.domain.Technical;
+import org.springframework.data.repository.CrudRepository;
 
-public interface ProjectRepository {
-    Iterable<Project> findAll();
-    Iterable<Project> findProjectByTechnical(Technical technical);
+public interface ProjectRepository extends CrudRepository<Project, Long> {
 }

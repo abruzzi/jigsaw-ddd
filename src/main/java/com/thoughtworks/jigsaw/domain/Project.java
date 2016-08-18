@@ -1,15 +1,23 @@
 package com.thoughtworks.jigsaw.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+@Entity
+@Table(name = "projects")
+@Data
+@NoArgsConstructor
 public class Project {
-    @Getter @Setter
+    @Id
+    @GeneratedValue
+    @Column(name = "id", unique = true, nullable = false)
+    private long id;
+
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Technical> techStack;
     private String name;
     private String client;
@@ -18,24 +26,14 @@ public class Project {
     private Date deadline;
     private String description;
 
-    private Map<Role, Integer> staffingModel;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Assignment> assignments;
 
     public Project(String name) {
         this.name = name;
     }
 
-    @Getter
-    private List<Assignment> assignments;
-
-    public boolean addAssignment(Assignment assignment) {
-        if(this.assignments == null) {
-            assignments = new ArrayList<>();
-        }
-
-        return assignments.add(assignment);
-    }
-
     public boolean withTechnical(Technical technical) {
-        return techStack.stream().anyMatch(t -> t.equals(technical));
+        return techStack.stream().anyMatch(t -> t.getCategory().equals(technical.getCategory()) && t.getName().equals(technical.getName()));
     }
 }

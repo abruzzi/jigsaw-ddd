@@ -41,7 +41,7 @@ public class StaffingService {
     }
 
     private boolean hasRolledOff(Employee employee) {
-        Iterable<Assignment> rolledOff = assignmentRepository.findByEmployeeAndEndDateBefore(employee, new Date());
+        Iterable<Assignment> rolledOff = assignmentRepository.findByEmployeeAndEndAtBefore(employee, new Date());
         return StreamSupport.stream(rolledOff.spliterator(), false).collect(Collectors.toList()).size() > 0;
     }
 
@@ -57,7 +57,7 @@ public class StaffingService {
         Project project = assignment.getProject();
         boolean suitable = assignment.getEmployee().isSuitableFor(project);
 
-        assignment.updateRelations();
+//        assignment.updateRelations();
         assignmentRepository.save(assignment);
 
         return suitable;
