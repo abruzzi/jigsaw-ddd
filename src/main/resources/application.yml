@@ -9,7 +9,7 @@ server:
   port: 9999
 
 spring.jpa.generate-ddl: true
-spring.jpa.hibernate.ddl-auto: create-drop
+spring.jpa.hibernate.ddl-auto: none
 
 spring.jpa.show-sql: true
 
