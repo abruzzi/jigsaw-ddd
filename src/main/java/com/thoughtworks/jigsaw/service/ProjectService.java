@@ -1,6 +1,5 @@
 package com.thoughtworks.jigsaw.service;
 
-import com.thoughtworks.jigsaw.domain.Employee;
 import com.thoughtworks.jigsaw.domain.Project;
 import com.thoughtworks.jigsaw.domain.Technical;
 import com.thoughtworks.jigsaw.repository.ProjectRepository;

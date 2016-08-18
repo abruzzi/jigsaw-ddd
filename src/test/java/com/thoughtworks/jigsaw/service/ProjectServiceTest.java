@@ -3,6 +3,7 @@ package com.thoughtworks.jigsaw.service;
 import com.thoughtworks.jigsaw.domain.Project;
 import com.thoughtworks.jigsaw.domain.Technical;
 import com.thoughtworks.jigsaw.repository.ProjectRepository;
+import com.thoughtworks.jigsaw.utils.ProjectBuilder;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -32,20 +32,30 @@ public class ProjectServiceTest {
     }
 
     private Iterable<Project> prepareProjects() {
-        Project twu = new Project("ThoughtWorks University");
-        twu.setTechStack(Collections.singletonList(new Technical("Java", "language")));
+        Project twu = new ProjectBuilder().
+                name("ThoughtWorks University").
+                technical(new Technical("Java", "language")).
+                build();
 
-        Project nepsd = new Project("NEP-SD Web");
-        nepsd.setTechStack(Arrays.asList(new Technical("Java", "language"), new Technical("JavaScript", "language")));
+        Project nepsd = new ProjectBuilder().
+                name("NEP-SD Web").
+                technicals(new Technical("Java", "language"), new Technical("JavaScript", "language")).
+                build();
 
-        Project twr = new Project("ThoughtWorks Recruting");
-        twr.setTechStack(Collections.singletonList(new Technical("Ruby", "language")));
+        Project twr = new ProjectBuilder().
+                name("ThoughtWorks Recruting").
+                technical(new Technical("Ruby", "language")).
+                build();
 
-        Project liveText = new Project("LiveText");
-        liveText.setTechStack(Arrays.asList(new Technical("Ruby", "language"), new Technical("Rails", "framework")));
+        Project liveText = new ProjectBuilder().
+                name("LiveText").
+                technicals(new Technical("Ruby", "language"), new Technical("Rails", "framework")).
+                build();
 
-        Project reporting = new Project("Reporting");
-        reporting.setTechStack(Arrays.asList(new Technical("Ruby", "language"), new Technical("Rails", "framework")));
+        Project reporting = new ProjectBuilder().
+                name("Reporting").
+                technicals(new Technical("Ruby", "language"), new Technical("Rails", "framework")).
+                build();
 
         return Arrays.asList(twu, nepsd, twr, liveText, reporting);
     }

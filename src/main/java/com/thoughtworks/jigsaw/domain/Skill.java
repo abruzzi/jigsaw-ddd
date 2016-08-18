@@ -21,6 +21,7 @@ public class Skill {
     private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employeeId")
     private Employee employee;
 
     public Skill(String name, String category, int rating) {

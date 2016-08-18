@@ -4,6 +4,7 @@ import com.thoughtworks.jigsaw.domain.*;
 import com.thoughtworks.jigsaw.repository.AssignmentRepository;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
 import com.thoughtworks.jigsaw.repository.ProjectRepository;
+import com.thoughtworks.jigsaw.repository.TechnicalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -24,6 +25,9 @@ public class Application {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
+	@Autowired
+	private TechnicalRepository technicalRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
@@ -32,22 +36,29 @@ public class Application {
 	public CommandLineRunner run() {
 		return (args) -> {
 			Technical java = new Technical("Java", "language");
-			Technical ruby = new Technical("Ruby", "language");
+			Technical spring = new Technical("Spring", "framework");
 
-			Project project = new Project("NEP-SD Web");
-			project.setTechStack(Arrays.asList(java, ruby));
+			Project nepsd = new Project("NEP-SD Web");
+			nepsd.setTechStack(Arrays.asList(java, spring));
 
-			Project saved = projectRepository.save(project);
+			Project saved = projectRepository.save(nepsd);
+
+			java.setProject(saved);
+			spring.setProject(saved);
+
+			technicalRepository.save(Arrays.asList(java, spring));
 
 			Employee juntao = new Employee("Juntao Qiu");
 			juntao.setSkills(Collections.singletonList(new Skill("Java", "language", 5)));
 			employeeRepository.save(juntao);
 
 			Date today = new Date();
-			Assignment assignment = new Assignment(project, juntao, today, today);
+			Assignment assignment = new Assignment(nepsd, juntao, today, today);
 			assignmentRepository.save(assignment);
 
-//			System.err.println(projectRepository.findOne(saved.getId()));
+			Iterable<Project> byTechnical = projectRepository.findByTechnical(java);
+//			System.err.println(saved);
+			byTechnical.forEach(x -> System.err.println(x.getName()));
 		};
 	}
 

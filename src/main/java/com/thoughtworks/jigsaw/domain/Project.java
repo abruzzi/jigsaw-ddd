@@ -19,6 +19,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Technical> techStack;
+
     private String name;
     private String client;
     private String location;

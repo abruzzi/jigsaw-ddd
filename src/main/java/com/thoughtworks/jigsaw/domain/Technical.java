@@ -24,6 +24,7 @@ public class Technical {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
     private Project project;
 
     @Override
