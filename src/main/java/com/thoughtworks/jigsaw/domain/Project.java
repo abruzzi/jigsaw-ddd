@@ -17,7 +17,8 @@ public class Project {
     @Column(name = "id", unique = true, nullable = false)
     private long id;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "projectId")
     private List<Technical> techStack;
 
     private String name;

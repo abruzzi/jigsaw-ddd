@@ -23,10 +23,6 @@ public class Technical {
         this.category = category;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private Project project;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

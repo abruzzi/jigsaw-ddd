@@ -21,7 +21,8 @@ public class Employee {
     @OneToOne(mappedBy = "employee")
     private Resume resume;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "employeeId")
     private List<Skill> skills;
 
     @OneToOne

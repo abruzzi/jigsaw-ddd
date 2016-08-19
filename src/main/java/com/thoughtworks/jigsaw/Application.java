@@ -43,9 +43,6 @@ public class Application {
 
 			Project saved = projectRepository.save(nepsd);
 
-			java.setProject(saved);
-			spring.setProject(saved);
-
 			technicalRepository.save(Arrays.asList(java, spring));
 
 			Employee juntao = new Employee("Juntao Qiu");
@@ -57,7 +54,7 @@ public class Application {
 			assignmentRepository.save(assignment);
 
 			Iterable<Project> byTechnical = projectRepository.findByTechnical(java);
-//			System.err.println(saved);
+			System.err.println(saved);
 			byTechnical.forEach(x -> System.err.println(x.getName()));
 		};
 	}
