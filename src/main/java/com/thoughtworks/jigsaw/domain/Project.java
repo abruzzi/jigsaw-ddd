@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "projects")
@@ -31,11 +32,14 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Assignment> assignments;
 
+    @Transient
+    private Map<Role, Integer> staffingModel;
+
     public Project(String name) {
         this.name = name;
     }
 
-    public boolean withTechnical(Technical technical) {
-        return techStack.stream().anyMatch(t -> t.getCategory().equals(technical.getCategory()) && t.getName().equals(technical.getName()));
+    public Map<Role, Integer> openRoles() {
+        return staffingModel;
     }
 }

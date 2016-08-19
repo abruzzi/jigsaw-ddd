@@ -4,5 +4,5 @@ import com.thoughtworks.jigsaw.domain.Employee;
 import org.springframework.data.repository.CrudRepository;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
-
+    Iterable<Employee> findByName(String name);
 }

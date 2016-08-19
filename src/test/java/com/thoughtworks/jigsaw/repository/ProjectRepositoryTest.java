@@ -1,13 +1,14 @@
-package com.thoughtworks.jigsaw.service;
+package com.thoughtworks.jigsaw.repository;
+
 
 import com.thoughtworks.jigsaw.domain.Project;
 import com.thoughtworks.jigsaw.domain.Technical;
-import com.thoughtworks.jigsaw.repository.ProjectRepository;
 import com.thoughtworks.jigsaw.utils.ProjectBuilder;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,19 +17,24 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProjectServiceTest {
-    private ProjectService projectService;
+public class ProjectRepositoryTest {
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @Before
     public void setUp() {
-        ProjectRepository projectRepository = mock(ProjectRepository.class);
-        when(projectRepository.findAll()).thenReturn(prepareProjects());
-        projectService = new ProjectService(projectRepository);
+        projectRepository.deleteAll();
+        projectRepository.save(prepareProjects());
+    }
+
+    @Test
+    public void should_return_projects_by_technical() {
+        Iterable<Project> projects = projectRepository.findByTechnical(new Technical("Java", "language"));
+        ArrayList<Project> projectsForJava = Lists.newArrayList(projects);
+        assertThat(projectsForJava.size(), is(2));
     }
 
     private Iterable<Project> prepareProjects() {
@@ -60,10 +66,4 @@ public class ProjectServiceTest {
         return Arrays.asList(twu, nepsd, twr, liveText, reporting);
     }
 
-    @Test
-    public void should_return_projects_by_technical() {
-        Iterable<Project> projects = projectService.projectsFor(new Technical("Java", "language"));
-        ArrayList<Project> projectsForJava = Lists.newArrayList(projects);
-        assertThat(projectsForJava.size(), is(2));
-    }
 }
