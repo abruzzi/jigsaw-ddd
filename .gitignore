@@ -3,3 +3,4 @@ out/
 .gradle/
 jigsaw.i*
 jigsaw-ddd.i*
+src/generated/

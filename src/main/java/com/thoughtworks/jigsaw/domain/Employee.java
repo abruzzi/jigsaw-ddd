@@ -1,9 +1,5 @@
 package com.thoughtworks.jigsaw.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -13,8 +9,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "employees")
-@Data
-@NoArgsConstructor
 public class Employee {
     @Id
     @GeneratedValue
@@ -23,10 +17,10 @@ public class Employee {
 
     private String name;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Resume resume;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private Role role;
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -39,11 +33,10 @@ public class Employee {
     private List<Assignment> assignments;
 
     @Transient
-    @Getter(AccessLevel.NONE)
     private Assignment currentAssignment;
 
     public Assignment getCurrentAssignment() {
-        if(assignments == null) {
+        if(assignments == null || assignments.size() == 0) {
             currentAssignment = null;
         } else {
             List<Assignment> cloned = new ArrayList<>(assignments);
@@ -73,5 +66,60 @@ public class Employee {
 
     public boolean isAssignable() {
         return getCurrentAssignment() == null || isOnTheBeach();
+    }
+
+    public Employee() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Resume getResume() {
+        return resume;
+    }
+
+    public void setResume(Resume resume) {
+        this.resume = resume;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+    public void setCurrentAssignment(Assignment currentAssignment) {
+        this.currentAssignment = currentAssignment;
     }
 }

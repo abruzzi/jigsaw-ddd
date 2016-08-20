@@ -1,14 +1,9 @@
 package com.thoughtworks.jigsaw.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 
-@Data
 @Entity
 @Table(name = "technicals")
-@NoArgsConstructor
 public class Technical {
     @Id
     @GeneratedValue
@@ -40,5 +35,32 @@ public class Technical {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (category != null ? category.hashCode() : 0);
         return result;
+    }
+
+    public Technical() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
