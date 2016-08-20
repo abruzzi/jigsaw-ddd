@@ -26,6 +26,9 @@ public class Employee {
     @OneToOne(mappedBy = "employee")
     private Resume resume;
 
+    @OneToOne(mappedBy = "employee")
+    private Role role;
+
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "employeeId")

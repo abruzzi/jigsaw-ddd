@@ -4,9 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "projects")
@@ -40,6 +39,21 @@ public class Project {
     }
 
     public Map<Role, Integer> openRoles() {
-        return staffingModel;
+        if(assignments == null) {
+            return staffingModel;
+        }
+
+        List<Role> roles = assignments.stream().map(x -> x.getEmployee().getRole()).collect(Collectors.toList());
+        HashMap<Role, Integer> openRoles = new HashMap<>();
+
+        roles.forEach(role -> {
+            if(staffingModel.containsKey(role)) {
+                openRoles.put(role, staffingModel.get(role)-1);
+            } else {
+                openRoles.put(role, 1);
+            }
+        });
+
+        return openRoles;
     }
 }
