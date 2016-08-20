@@ -26,7 +26,7 @@ public class Project {
     private Date deadline;
     private String description;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Assignment> assignments;
 
     @Transient

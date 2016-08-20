@@ -11,11 +11,11 @@ public class Assignment {
     @Column(name = "id", unique = true, nullable = false)
     private long id;
 
-    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employeeId")
     private Employee employee;
 
-    @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId")
     private Project project;
 
