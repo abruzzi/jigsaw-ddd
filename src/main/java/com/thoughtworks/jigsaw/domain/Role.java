@@ -18,6 +18,9 @@ public class Role {
     private String name;
     private String gradle;
 
+    @OneToOne
+    private Employee employee;
+
     public Role(String name, String gradle) {
         this.name = name;
         this.gradle = gradle;
