@@ -1,5 +1,6 @@
 package com.thoughtworks.jigsaw.domain;
 
+import com.thoughtworks.jigsaw.utils.EmployeeBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,7 @@ public class ProjectTest {
         Role seniorDev = new Role("Dev", "Senior");
         Role seniorQA = new Role("QA", "Senior");
 
-        Map<Role, Integer> staffingModel = prepareStaffingModel(seniorDev, seniorQA);
+        Map<Role, Integer> staffingModel = prepareStaffingModel();
 
         project.setStaffingModel(staffingModel);
         Map<Role, Integer> actual = project.openRoles();
@@ -34,27 +35,27 @@ public class ProjectTest {
 
     @Test
     public void should_tell_how_many_open_roles_left_after_assignments() {
-        Role seniorDev = new Role("Dev", "Senior");
-        Role seniorQA = new Role("QA", "Senior");
+        EmployeeBuilder b1 = new EmployeeBuilder();
+        Employee juntao = b1.name("Juntao Qiu").role(new Role("Dev", "Senior")).build();
 
-        Employee juntao = new Employee("Juntao Qiu");
-        juntao.setRole(seniorDev);
+        EmployeeBuilder b2 = new EmployeeBuilder();
+        Employee yong = b2.name("Yong Huang").role(new Role("QA", "Senior")).build();
 
-        Employee yong = new Employee("Yong Huang");
-        yong.setRole(seniorQA);
-
-        Map<Role, Integer> staffingModel = prepareStaffingModel(seniorDev, seniorQA);
+        Map<Role, Integer> staffingModel = prepareStaffingModel();
 
         Date date = new Date();
         project.setStaffingModel(staffingModel);
         project.setAssignments(Arrays.asList(new Assignment(project, juntao, date, date), new Assignment(project, yong, date, date)));
 
         Map<Role, Integer> actual = project.openRoles();
-        assertThat(actual.get(seniorDev), is(2));
-        assertThat(actual.get(seniorQA), is(0));
+        assertThat(actual.get(new Role("Dev", "Senior")), is(2));
+        assertThat(actual.get(new Role("QA", "Senior")), is(0));
     }
 
-    private Map<Role, Integer> prepareStaffingModel(Role seniorDev, Role seniorQA) {
+    private Map<Role, Integer> prepareStaffingModel() {
+        Role seniorDev = new Role("Dev", "Senior");
+        Role seniorQA = new Role("QA", "Senior");
+
         return Collections.unmodifiableMap(Stream.of(
                     new AbstractMap.SimpleEntry<>(seniorDev, 3),
                     new AbstractMap.SimpleEntry<>(seniorQA, 1)

@@ -1,5 +1,6 @@
 package com.thoughtworks.jigsaw.domain;
 
+import com.thoughtworks.jigsaw.utils.ProjectBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,19 +33,23 @@ public class EmployeeTest {
 
     @Test
     public void should_not_be_suitable_when_skills_are_not_matching() {
+        Project project = prepareRubyProject();
         employee.setSkills(Collections.singletonList(new Skill("Java", "language", 5)));
-        Project project = new Project("Rails Boys");
-        project.setTechStack(Collections.singletonList(new Technical("Ruby", "language")));
-
         assertThat(employee.isSuitableFor(project), is(false));
     }
 
     @Test
     public void should_be_suitable_when_skills_are_matching() {
+        Project project = prepareRubyProject();
         employee.setSkills(Collections.singletonList(new Skill("Ruby", "language", 5)));
-        Project project = new Project("Rails Boys");
-        project.setTechStack(Collections.singletonList(new Technical("Ruby", "language")));
-
         assertThat(employee.isSuitableFor(project), is(true));
+    }
+
+    private Project prepareRubyProject() {
+        ProjectBuilder builder = new ProjectBuilder();
+        return builder.
+                name("Rails Boys").
+                technical(new Technical("Ruby", "language")).
+                build();
     }
 }
