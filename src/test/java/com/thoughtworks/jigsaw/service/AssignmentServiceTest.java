@@ -3,7 +3,9 @@ package com.thoughtworks.jigsaw.service;
 import com.thoughtworks.jigsaw.domain.Assignment;
 import com.thoughtworks.jigsaw.domain.Employee;
 import com.thoughtworks.jigsaw.domain.Project;
-import com.thoughtworks.jigsaw.exception.NotProjectReadyException;
+import com.thoughtworks.jigsaw.exception.CannotTravelException;
+import com.thoughtworks.jigsaw.exception.IsNotAssignableException;
+import com.thoughtworks.jigsaw.exception.IsNotSuitableException;
 import com.thoughtworks.jigsaw.repository.AssignmentRepository;
 import com.thoughtworks.jigsaw.repository.EmployeeRepository;
 import com.thoughtworks.jigsaw.repository.ProjectRepository;
@@ -45,8 +47,8 @@ public class AssignmentServiceTest {
         assignmentRepository.deleteAll();
     }
 
-    @Test(expected = NotProjectReadyException.class)
-    public void should_not_assign_java_dev_to_ruby_project() throws ParseException, NotProjectReadyException {
+    @Test(expected = IsNotSuitableException.class)
+    public void should_not_assign_java_dev_to_ruby_project() throws ParseException, CannotTravelException, IsNotAssignableException, IsNotSuitableException {
         Project project = Fixture.prepareARubyProject();
         Employee dev = Fixture.prepareAJavaDev();
 
@@ -55,7 +57,7 @@ public class AssignmentServiceTest {
     }
 
     @Test
-    public void should_assign_ruby_dev_to_ruby_project() throws ParseException, NotProjectReadyException {
+    public void should_assign_ruby_dev_to_ruby_project() throws ParseException, CannotTravelException, IsNotAssignableException, IsNotSuitableException {
         Project project = Fixture.prepareARubyProject();
         Employee dev = Fixture.prepareARubyDev();
 
@@ -64,5 +66,18 @@ public class AssignmentServiceTest {
 
         assertThat(assignment.getEmployee().getName(), is(dev.getName()));
         assertThat(assignment.getProject().getName(), is(project.getName()));
+    }
+
+    @Test(expected = CannotTravelException.class)
+    public void should_not_assign_when_java_dev_can_want_to_travel() throws ParseException, CannotTravelException, IsNotAssignableException, IsNotSuitableException {
+        Project project = Fixture.prepareARubyProject();
+        Employee dev = Fixture.prepareARubyDev();
+
+        project.setLocation("Shenzhen");
+        dev.setHomeOffice("Beijing");
+        dev.setTravelPreference("no-travel");
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        assignmentService.assign(dev, project, format.parse("2016-08-08"), format.parse("2016-09-08"));
     }
 }

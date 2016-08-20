@@ -20,6 +20,11 @@ public class ProjectBuilder {
         return this;
     }
 
+    public ProjectBuilder location(String location) {
+        project.setLocation(location);
+        return this;
+    }
+
     public ProjectBuilder technical(Technical technical) {
         project.getTechStack().add(technical);
         return this;

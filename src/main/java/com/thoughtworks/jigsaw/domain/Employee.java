@@ -34,6 +34,8 @@ public class Employee {
 
     @Transient
     private Assignment currentAssignment;
+    private String homeOffice;
+    private String travelPreference;
 
     public Assignment getCurrentAssignment() {
         if(assignments == null || assignments.size() == 0) {
@@ -121,5 +123,22 @@ public class Employee {
 
     public void setCurrentAssignment(Assignment currentAssignment) {
         this.currentAssignment = currentAssignment;
+    }
+
+
+    public void setHomeOffice(String homeOffice) {
+        this.homeOffice = homeOffice;
+    }
+
+    public String getHomeOffice() {
+        return homeOffice;
+    }
+
+    public void setTravelPreference(String travelPreference) {
+        this.travelPreference = travelPreference;
+    }
+
+    public String getTravelPreference() {
+        return travelPreference;
     }
 }

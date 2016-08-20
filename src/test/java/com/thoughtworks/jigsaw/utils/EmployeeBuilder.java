@@ -22,6 +22,16 @@ public class EmployeeBuilder {
         return this;
     }
 
+    public EmployeeBuilder travelPreference(String travelPreference) {
+        employee.setTravelPreference(travelPreference);
+        return this;
+    }
+
+    public EmployeeBuilder homeOffice(String homeOffice) {
+        employee.setHomeOffice(homeOffice);
+        return this;
+    }
+
     public EmployeeBuilder role(Role role) {
         employee.setRole(role);
         return this;

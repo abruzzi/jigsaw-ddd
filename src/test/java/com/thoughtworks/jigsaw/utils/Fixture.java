@@ -11,6 +11,7 @@ public class Fixture {
         return builder.
                 name("Rails Boys").
                 technical(new Technical("Ruby", "language")).
+                location("Xian").
                 build();
     }
 
@@ -20,6 +21,8 @@ public class Fixture {
                 name("Ruby Dev").
                 skill(new Skill("Ruby", "language", 5)).
                 role(new Role("Dev", "Senior")).
+                homeOffice("Xian").
+                travelPreference("travel").
                 build();
     }
 
@@ -29,6 +32,8 @@ public class Fixture {
                 name("Java Dev").
                 skill(new Skill("Java", "language", 5)).
                 role(new Role("Dev", "Senior")).
+                homeOffice("Xian").
+                travelPreference("travel").
                 build();
     }
 }
