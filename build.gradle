@@ -10,11 +10,6 @@ buildscript {
 	}
 }
 
-
-plugins {
-	id "at.comm_unity.gradle.plugins.jpamodelgen" version "1.1.1"
-}
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
@@ -38,16 +33,3 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('com.jayway.restassured:rest-assured:2.9.0')
 }
-
-sourceSets {
-	generated {
-		java.srcDir "${buildDir}/generated/java"
-	}
-}
-
-jpaModelgen {
-	library = "org.hibernate:hibernate-jpamodelgen:5.0.7.Final"
-	jpaModelgenSourcesDir = "src/generated/java"
-}
-
-compileJava.options.compilerArgs += ["-proc:none"]
